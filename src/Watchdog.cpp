@@ -8,9 +8,22 @@ class Watchdog
 {
 private:
 public:
-    void Watch(std::string file_path);
-    string paths[0];
+    string parent_path;
+    string paths;
+    Watchdog(string parent_path2)
+    {
+        parent_path = parent_path2;
+    };
+    void Watch()
+    {
+        for (auto entry : fs::directory_iterator(parent_path))
+        {
+            // cout << entry.path().string() << endl;
+            // paths += "a";
+        }
+    };
 };
+
 void sleep(int time)
 {
     std::time_t start_time = std::time(0);
@@ -18,22 +31,15 @@ void sleep(int time)
     {
     }
 }
-void Watchdog::Watch(std::string parent_path)
-{
-    string* paths = this->paths;
-    for (const auto & entry : fs::directory_iterator(parent_path))
-    {
-        paths->append(entry.path().string());
-    }
-}
 
 int main()
 {
-    Watchdog file_1;
-    file_1.Watch("../");
-    cout << file_1.paths->length() << endl;
+    Watchdog file_1("../");
+    cout << file_1.parent_path << endl;
     for (int i = 0; file_1.paths->length(); i++)
     {
-        cout << file_1.paths[i] << endl;
+        cout << i << file_1.paths[i] << endl;
+        sleep(1);
     }
+    return 1;
 }
