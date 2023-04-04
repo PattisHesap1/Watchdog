@@ -2,14 +2,15 @@
 #include <iostream>
 #include <filesystem>
 using namespace std;
-namespace fs = std::filesystem;
+namespace fs = filesystem;
 
 class Watchdog
 {
 private:
+
 public:
     string parent_path;
-    string paths;
+    string paths[];
     Watchdog(string parent_path2)
     {
         parent_path = parent_path2;
@@ -19,7 +20,7 @@ public:
         for (auto entry : fs::directory_iterator(parent_path))
         {
             // cout << entry.path().string() << endl;
-            // paths += "a";
+            paths.append(entry.path().string());
         }
     };
 };
@@ -35,11 +36,11 @@ void sleep(int time)
 int main()
 {
     Watchdog file_1("../");
+    file_1.Watch();
     cout << file_1.parent_path << endl;
-    for (int i = 0; file_1.paths->length(); i++)
+    for (int i = 0; i < file_1.paths.length(); i++)
     {
         cout << i << file_1.paths[i] << endl;
-        sleep(1);
     }
     return 1;
 }
